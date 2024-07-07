@@ -51,7 +51,7 @@ function ConvertHandler() {
       'km to mi': 1/miToKm
     }
 
-    console.log(`${initUnit} to ${this.unitConversions[initUnit]}`)
+    console.log(`${initUnit} to ${parseFloat(this.unitConversions[initUnit].toFixed(5))}`)
     
     return initNum * unitRatios[`${initUnit} to ${this.unitConversions[initUnit]}`];
   };
