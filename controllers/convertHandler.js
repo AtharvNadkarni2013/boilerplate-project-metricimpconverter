@@ -26,7 +26,7 @@ function ConvertHandler() {
     const firstLetterIndex = input.search(/[a-zA-Z]/)
     const result = input.slice(firstLetterIndex);
     
-    return result != 'L' ? result.toLowerCase(): 'L';
+    return result != 'L' && result != 'l' ? result.toLowerCase(): 'L';
   };
   
   this.getReturnUnit = function(initUnit) {
