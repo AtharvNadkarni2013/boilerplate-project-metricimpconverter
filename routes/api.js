@@ -8,7 +8,20 @@ module.exports = function (app) {
   app.get('/api/convert',(req, res) => {
     let convertHandler = new ConvertHandler();
     const { input } = req.query
+    const units = ["gal", "L", "mi", "km", "lbs", "kg"]
     const [initNum, initUnit] = [convertHandler.getNum(input), convertHandler.getUnit(input)]
+
+    if (!units.includes(input) && initNum === 1) {
+      return res.contentType('text').send('invalid unit')
+    }
+
+    if (initNum=="invalid") {
+      return res.contentType('text').send('invalid number')
+    }
+
+    if (!units.includes(input) && initNum=="invalid") {
+      return res.contentType('text').send('invalid number and unit')
+    }
 
     
     const returnNum = convertHandler.convert(initNum, initUnit);

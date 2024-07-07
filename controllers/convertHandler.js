@@ -19,6 +19,9 @@ function ConvertHandler() {
     const firstLetterIndex = input.search(/[a-zA-Z]/)
     if (firstLetterIndex == 0) return 1;
     const result = input.slice(0, firstLetterIndex);
+    if (result.split('').filter(x => x == '/' || x == '.').length > 1) {
+      return 'invalid';
+    } 
     return eval(result);
   };
   
@@ -51,8 +54,7 @@ function ConvertHandler() {
       'km to mi': 1/miToKm
     }
 
-    
-    return initNum * parseFloat(unitRatios[`${initUnit} to ${this.unitConversions[initUnit]}`].toFixed(5));
+    return parseFloat((initNum * (unitRatios[`${initUnit} to ${this.unitConversions[initUnit]}`])).toFixed(5));
   };
   
   this.getString = function(initNum, initUnit, returnNum, returnUnit) {
