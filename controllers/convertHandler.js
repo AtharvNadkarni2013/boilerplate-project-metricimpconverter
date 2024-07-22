@@ -8,19 +8,19 @@ function ConvertHandler() {
     kg: 'lbs'
   }
   this.unitSpellings = {
-    gal: 'gallon',
-    L: 'liter',
-    mi: 'mile',
-    km: 'kilometer'
-    ,lbs: 'pound',
-    kg: 'kilogram'
+    gal: 'gallons',
+    L: 'liters',
+    mi: 'miles',
+    km: 'kilometers'
+    ,lbs: 'pounds',
+    kg: 'kilograms'
   }
   this.getNum = function(input) {
     const firstLetterIndex = input.search(/[a-zA-Z]/)
-    if (firstLetterIndex == 0) return 1;
+    if (firstLetterIndex == 0 || input == '') return 1;
     const result = input.slice(0, firstLetterIndex);
     if (result.split('').filter(x => x == '/' || x == '.').length > 1) {
-      return 'invalid';
+      throw new Error('Error here');
     } 
     return eval(result);
   };
@@ -28,6 +28,8 @@ function ConvertHandler() {
   this.getUnit = function(input) {
     const firstLetterIndex = input.search(/[a-zA-Z]/)
     const result = input.slice(firstLetterIndex);
+
+    if (!['L', 'km', 'kg', 'lb', 'mi', 'gal'].includes(result)) throw Error
     
     return result != 'L' && result != 'l' ? result.toLowerCase(): 'L';
   };
@@ -41,6 +43,7 @@ function ConvertHandler() {
   };
   
   this.convert = function(initNum, initUnit) {
+    const val = initNum ? initNum : '1';
     const galToL = 3.78541;
     const lbsToKg = 0.453592;
     const miToKm = 1.60934;
@@ -54,13 +57,15 @@ function ConvertHandler() {
       'km to mi': 1/miToKm
     }
 
-    return parseFloat((initNum * (unitRatios[`${initUnit} to ${this.unitConversions[initUnit]}`])).toFixed(5));
+    if (initNum.split('').filter(x => x == '/' || x == '.').length > 1) {
+      throw new Error('Error here');
+    } 
+
+    return parseFloat((eval(val) * (unitRatios[`${initUnit} to ${this.unitConversions[initUnit]}`])).toFixed(5));
   };
   
   this.getString = function(initNum, initUnit, returnNum, returnUnit) {
-    const initUnitPlural = (initUnit != 1) ? `${this.spellOutUnit(initUnit)}s` : this.spellOutUnit(initUnit);
-    const returnUnitPlural = (returnUnit != 1) ? `${this.spellOutUnit(returnUnit)}s` : this.spellOutUnit(returnUnit);
-    let result = `${initNum} ${initUnitPlural} converts to ${returnNum} ${returnUnitPlural}`;
+    let result = `${initNum} ${this.unitSpellings[initUnit]} converts to ${returnNum} ${this.unitSpellings[returnUnit]}`;
     
     return result;
   };
