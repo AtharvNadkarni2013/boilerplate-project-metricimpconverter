@@ -9,29 +9,23 @@ module.exports = function (app) {
     let convertHandler = new ConvertHandler();
     const { input } = req.query
     const units = ["gal", "L", "mi", "km", "lbs", "kg"]
-    try {
+    // try {
 
     const [initNum, initUnit] = [convertHandler.getNum(input), convertHandler.getUnit(input)]
 
-    if (!units.includes(input) && initNum === 1) {
-      return res.contentType('text').send('invalid unit')
-    }} catch (err) {
-      if (!units.includes(input)) {
-        return res.contentType('text').send('invalid number and unit')
-      }
-      return res.contentType('text').send('invalid number')
-    }
+    // }
+    // catch (err) {
+    //   if (!units.includes(input) && initNum === 1) {
+    //     return res.contentType('text').send('invalid unit')
+    //   } else if (!units.includes(input)) {
+    //     return res.contentType('text').send('invalid number and unit')
+    //   }
+    //   return res.contentType('text').send('invalid number')
+    // }
 
-    if (initNum=="invalid") {
-      return res.contentType('text').send('invalid number')
-    }
-
-    if (!units.includes(input) && initNum=="invalid") {
-      return res.contentType('text').send('invalid number and unit')
-    }
-
+    console.log(initNum, initUnit)
     
-    const returnNum = convertHandler.convert(initNum, initUnit);
+    const returnNum = convertHandler.convert("3", initUnit);
     const returnUnit = convertHandler.getReturnUnit(initUnit);
     const string = convertHandler.getString(initNum, initUnit, returnNum, returnUnit)
     res.json({initNum, initUnit, returnNum, returnUnit, string})

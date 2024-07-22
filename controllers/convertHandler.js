@@ -61,7 +61,9 @@ function ConvertHandler() {
       throw new Error('Error here');
     } 
 
-    return parseFloat((eval(val) * (unitRatios[`${initUnit} to ${this.unitConversions[initUnit]}`])).toFixed(5));
+    // return parseFloat((eval(val) * (unitRatios[`${initUnit} to ${this.unitConversions[initUnit]}`])).toFixed(5));
+
+    return this.unitConversions[initUnit]
   };
   
   this.getString = function(initNum, initUnit, returnNum, returnUnit) {
