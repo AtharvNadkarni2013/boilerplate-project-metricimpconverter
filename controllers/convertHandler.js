@@ -30,7 +30,7 @@ function ConvertHandler() {
     const result = input.slice(firstLetterIndex);
     const val = result != 'L' && result != 'l' ? result.toLowerCase(): 'L';
 
-    if (!['L', 'km', 'kg', 'lb', 'mi', 'gal'].includes(val)) throw Error
+    if (!['L', 'km', 'kg', 'lbs', 'mi', 'gal'].includes(val)) throw Error
     
     return val;
   };

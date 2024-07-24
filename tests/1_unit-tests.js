@@ -19,7 +19,7 @@ suite('Unit Tests', function () {
     }), test('Default Input', () => {
         assert.equal(convertHandler.getNum('kg'), 1)
     }), test('Valid Unit Input', () => {
-        assert.doesNotThrow(() => convertHandler.getUnit('lb'))
+        assert.doesNotThrow(() => convertHandler.getUnit('lbs'))
         assert.doesNotThrow(() => convertHandler.getUnit('kg'))
         assert.doesNotThrow(() => convertHandler.getUnit('mi'))
         assert.doesNotThrow(() => convertHandler.getUnit('km'))
