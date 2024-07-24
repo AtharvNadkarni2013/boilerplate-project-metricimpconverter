@@ -28,10 +28,11 @@ function ConvertHandler() {
   this.getUnit = function(input) {
     const firstLetterIndex = input.search(/[a-zA-Z]/)
     const result = input.slice(firstLetterIndex);
+    const val = result != 'L' && result != 'l' ? result.toLowerCase(): 'L';
 
-    if (!['L', 'km', 'kg', 'lb', 'mi', 'gal'].includes(result)) throw Error
+    if (!['L', 'km', 'kg', 'lb', 'mi', 'gal'].includes(val)) throw Error
     
-    return result != 'L' && result != 'l' ? result.toLowerCase(): 'L';
+    return val;
   };
   
   this.getReturnUnit = function(initUnit) {
@@ -44,6 +45,9 @@ function ConvertHandler() {
   
   this.convert = function(initNum, initUnit) {
     const val = initNum ? initNum : '1';
+
+    const unit = initUnit == 'L' || initUnit == 'l' ? 'L' : initUnit.toLowerCase();
+    const returnUnit = this.unitConversions[unit]
     const galToL = 3.78541;
     const lbsToKg = 0.453592;
     const miToKm = 1.60934;
@@ -57,11 +61,11 @@ function ConvertHandler() {
       'km to mi': 1/miToKm
     }
 
-    if (initNum.split('').filter(x => x == '/' || x == '.').length > 1) {
+    if (initNum.toString().split('').filter(x => x == '/' || x == '.').length > 1) {
       throw new Error('Error here');
     } 
 
-    return parseFloat((eval(val) * (unitRatios[`${initUnit} to ${this.unitConversions[initUnit]}`])).toFixed(5));
+    return parseFloat((eval(val) * (unitRatios[`${unit} to ${returnUnit}`])).toFixed(5));
 
     // return this.unitConversions[initUnit]
   };
