@@ -19,7 +19,7 @@ function ConvertHandler() {
     const firstLetterIndex = input.search(/[a-zA-Z]/)
     if (firstLetterIndex == 0 || input == '') return 1;
     const result = input.slice(0, firstLetterIndex);
-    if (result.split('').filter(x => x == '/' || x == '.').length > 1) {
+    if (result.toString().split('').filter(x => x == '/').length>1 || result.toString().split('').filter(x => x == '.').length>1) {
       throw new Error('Error here');
     } 
     return eval(result);
@@ -61,7 +61,7 @@ function ConvertHandler() {
       'km to mi': 1/miToKm
     }
 
-    if (initNum.toString().split('').filter(x => x == '/' || x == '.').length > 1) {
+    if (initNum.toString().split('').filter(x => x == '/').length>1 || initNum.toString().split('').filter(x => x == '.').length>1) {
       throw new Error('Error here');
     } 
 
@@ -71,7 +71,9 @@ function ConvertHandler() {
   };
   
   this.getString = function(initNum, initUnit, returnNum, returnUnit) {
-    let result = `${initNum} ${this.unitSpellings[initUnit]} converts to ${returnNum} ${this.unitSpellings[returnUnit]}`;
+    const pluralInitUnit = initNum.toString() == "1" ? this.unitSpellings[initUnit].slice(0, -1) : this.unitSpellings[initUnit]
+    const pluralReturnUnit = returnNum.toString() == "1" ? this.unitSpellings[returnUnit].slice(0, -1) : this.unitSpellings[returnUnit]
+    let result = `${initNum} ${pluralInitUnit} converts to ${returnNum} ${pluralReturnUnit}`;
     
     return result;
   };

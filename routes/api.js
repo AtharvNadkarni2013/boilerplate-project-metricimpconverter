@@ -9,22 +9,30 @@ module.exports = function (app) {
     let convertHandler = new ConvertHandler();
     const { input } = req.query
     const units = ["gal", "L", "mi", "km", "lbs", "kg"]
-    let initNum, initUnit
+    let initNum, initUnit, errorValue
     try {
 
     [initNum, initUnit] = [convertHandler.getNum(input), convertHandler.getUnit(input)]
 
     }
     catch (err) {
-      if (!units.includes(input) && initNum === 1) {
-        return res.contentType('text').send('invalid unit')
-      } else if (!units.includes(input)) {
-        return res.contentType('text').send('invalid number and unit')
+      try {
+        const unit = convertHandler.getUnit(input)
+      } catch (err) {
+        errorValue = "invalid unit"
       }
-      return res.contentType('text').send('invalid number')
+      try {
+        const num = convertHandler.getNum(input)
+      } catch (err) {
+        if (errorValue == "invalid unit") {
+          errorValue = "invalid number and unit"
+        } else {
+        errorValue = "invalid number"
+        }
+      }
+      return res.send(errorValue)
     }
 
-    console.log(initNum, initUnit)
     
     const returnNum = convertHandler.convert(initNum.toString(), initUnit);
     const returnUnit = convertHandler.getReturnUnit(initUnit);
